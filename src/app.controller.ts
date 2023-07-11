@@ -6,9 +6,10 @@ import { JwtAuthGuard } from './security/auth/jwt-auth.guard';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
-  getHello(): string {
-    return 'true';
+  getHello(): any {
+    return this.appService.getHello();
+    // return 'true';
   }
 }
