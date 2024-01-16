@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/security/user/user.entity/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])], // Import the module providing UserEntityRepository
+  imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [RegisterController],
   providers: [RegisterService],
 })

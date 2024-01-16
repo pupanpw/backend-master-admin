@@ -16,7 +16,7 @@ import { UserEntity } from '../user/user.entity/user.entity';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1h' },
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],
