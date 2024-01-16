@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from 'src/security/user/user.entity/user.entity';
 import { CreateRegisterDto } from './dto/create-register.dto';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { UserResponseDto } from './dto/user.response.dto';
 
 @Injectable()
 export class RegisterService {
@@ -14,8 +16,12 @@ export class RegisterService {
 
   async findAll() {
     const [data, total] = await this.usersRepository.findAndCount();
-
-    return { data, total };
+    return {
+      data: instanceToPlain(plainToInstance(UserResponseDto, data), {
+        strategy: 'excludeAll',
+      }),
+      total: total,
+    };
   }
 
   async findOne(user: CreateRegisterDto) {
@@ -37,7 +43,7 @@ export class RegisterService {
       return this.usersRepository.save(user);
     } else {
       throw new BadRequestException({
-        statusCode: 400,
+        status_code: 400,
         message: `User Name Dupplicate!.`,
         error: 'Bad Request',
       });

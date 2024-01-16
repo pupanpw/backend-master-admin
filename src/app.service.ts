@@ -77,6 +77,13 @@ export class AppService {
         stage: 'Tax Rebate',
         stage_ref_id: null,
       },
+
+      {
+        id: 1559,
+        init_id: 'IN-EX-SO-2023-000097',
+        stage: 'Export Finance Memo',
+        stage_ref_id: 'MMP2300015',
+      },
     ];
 
     const primarySort = [
@@ -91,17 +98,15 @@ export class AppService {
     const response = result.reduce((acc, item) => {
       if (item.stage === 'Credit Requisition') {
         const planLoadIndex = acc.findIndex(
-          (el) =>
-            el.stage === 'Plan Load' && el.plan_load_id === item.plan_load_id,
+          (e) =>
+            e.stage === 'Plan Load' && e.plan_load_id === item.plan_load_id,
         );
 
         if (planLoadIndex !== -1) {
-          console.log('loops ', item);
           if (!acc[planLoadIndex].children) {
             acc[planLoadIndex].children = [];
           }
           acc[planLoadIndex].children.push(item);
-          console.log('loops2 ', acc);
         }
       } else {
         acc.push(item);
@@ -113,9 +118,9 @@ export class AppService {
       const stageA = primarySort.indexOf(a.stage);
       const stageB = primarySort.indexOf(b.stage);
 
-      // if (stageA === stageB) {
-      //   return 0;
-      // }
+      if (stageA === stageB) {
+        return 0;
+      }
 
       if (stageA < stageB) {
         return -1;
@@ -129,8 +134,7 @@ export class AppService {
     });
 
     response.filter((item) => item.stage !== 'Credit Requisition');
-    // console.table(response);
-    // console.log(response);
+    console.table(response);
     response.forEach((init) => {
       this.parseMetaDataToJSON(init);
     });

@@ -1,20 +1,27 @@
-import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { Role } from '../user/dto/user.dto';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Role } from 'src/types/common-request.type';
 
-export function RoleGuard(role: Role): Type<CanActivate> {
-  class RoleGuardMixin extends JwtAuthGuard {
-    async canActivate(context: ExecutionContext) {
-      const request = context.switchToHttp().getRequest();
-      const user = request.user;
-      if (user && user.role) {
-        return user.role === role;
-      }
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndMerge<Role[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (!requiredRoles || requiredRoles.length === 0) {
+      return true;
+    }
+
+    const { user } = context.switchToHttp().getRequest();
+
+    if (!user || !user.role) {
       return false;
     }
+
+    return requiredRoles.includes(user.role);
   }
-
-  return RoleGuardMixin;
 }
-
-export default RoleGuard;

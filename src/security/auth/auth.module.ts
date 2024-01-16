@@ -7,7 +7,6 @@ import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { jwtConstants } from '../constants/constants';
 import { UserService } from '../user/user.service';
-import { LocalStrategy } from './local-strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity/user.entity';
 
@@ -21,7 +20,7 @@ import { UserEntity } from '../user/user.entity/user.entity';
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],
-  providers: [AuthService, LocalStrategy, UserService, JwtStrategy],
+  providers: [AuthService, UserService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

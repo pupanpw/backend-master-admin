@@ -25,7 +25,9 @@ export class UserService {
     }),
   ];
 
-  findOne(username: string): Observable<UserDto | undefined> {
+  async findOne(username: string): Promise<Observable<UserDto | any>> {
+    const user = await this.usersRepository.find();
+    console.log('loops', user);
     return of(this.users.find((user) => user.username === username));
   }
 }
