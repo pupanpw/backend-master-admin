@@ -4,9 +4,10 @@ import { UserEntity } from '../../modules/user/user.entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Role, UserInfo } from 'src/types/common-request.type';
+import { UserInfo } from 'src/types/common-request.type';
 import { Observable, of } from 'rxjs';
 import { UnauthorizedException } from '@nestjs/common/exceptions/unauthorized.exception';
+import { mapPermissionToRole } from '@/common/convertPermission';
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,7 +24,7 @@ export class AuthService {
     });
 
     if (user && (await bcrypt.compare(credentials.password, user.password))) {
-      const role = this.mapPermissionToRole(user.permission);
+      const role = mapPermissionToRole(user.permission);
       const payload: UserInfo = {
         user_id: user.user_id,
         id: user.id,
@@ -43,19 +44,6 @@ export class AuthService {
 
   private generateAccessToken(payload: UserInfo): string {
     return this.jwtService.sign(payload);
-  }
-
-  private mapPermissionToRole(permission: string): Role {
-    switch (permission) {
-      case '0':
-        return Role.User;
-      case '1':
-        return Role.Admin;
-      case '2':
-        return Role.MasterAdmin;
-      default:
-        return Role.User;
-    }
   }
 
   islogin(user: UserInfo): Observable<any> {

@@ -3,16 +3,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): any {
-    const buffer = {
-      id: 13643,
-      sales_order_no: 'GTSOPCG2300565',
-      init_id: 'IN-EX-SO-2024-000',
-    };
-
-    const converJsonToBuffer = Buffer.from(JSON.stringify(buffer));
-    console.log();
-    const decodedBuffer = JSON.parse(converJsonToBuffer.toString());
-    console.log(decodedBuffer, 'decodedBuffer');
     const result = [
       {
         id: 1541,

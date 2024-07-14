@@ -17,6 +17,6 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 11 })
   password: string;
 
-  @Column({ length: 255, name: 'PERMISSION' })
-  permission: string;
+  @Column({ name: 'PERMISSION' })
+  permission: number;
 }

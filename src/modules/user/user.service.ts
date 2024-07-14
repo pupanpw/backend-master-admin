@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
 import { Role, UserDto } from './dto/user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -25,9 +24,9 @@ export class UserService {
     }),
   ];
 
-  async findOne(username: string): Promise<Observable<UserDto | any>> {
-    const user = await this.usersRepository.find();
-    console.log('loops', user);
-    return of(this.users.find((user) => user.username === username));
-  }
+  // async findOne(username: string): Promise<Observable<UserDto | any>> {
+  //   const user = await this.usersRepository.find();
+  //   console.log('loops', user);
+  //   return of(this.users.find((user) => user.username === username));
+  // }
 }

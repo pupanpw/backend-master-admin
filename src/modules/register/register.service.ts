@@ -6,12 +6,16 @@ import { UserEntity } from '@/modules/user/user.entity/user.entity';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dto/user.response.dto';
+import { UpdateRegisterDto } from './dto/update-register.dto';
+import { CommonRequest } from '@/types/common-request.type';
+import { PermissionService } from '../permission/permission.service';
 
 @Injectable()
 export class RegisterService {
   constructor(
     @InjectRepository(UserEntity)
     private usersRepository: Repository<UserEntity>,
+    private permissionService: PermissionService,
   ) {}
 
   async findAll() {
@@ -47,6 +51,32 @@ export class RegisterService {
         message: `User Name Dupplicate!.`,
         error: 'Bad Request',
       });
+    }
+  }
+
+  async update(
+    body: UpdateRegisterDto,
+    id: number,
+    commonRequest: CommonRequest,
+  ) {
+    this.permissionService.checkUserPermission(commonRequest.user);
+    try {
+      const findUser = await this.usersRepository.findOneOrFail({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findUser) {
+        throw new Error(`Error: ID ${id} is invalid`);
+      }
+      console.log(body.permission, 'body.permission');
+      //  let    mapPermissionToRole()
+      const updateUser = await this.usersRepository.update(id, body);
+
+      return updateUser;
+    } catch (e) {
+      throw new Error(`Error: ID ${id} is invalid`);
     }
   }
 }
