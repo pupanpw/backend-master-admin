@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../user/user.entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role, UserInfo } from 'src/types/common-request.type';
 import { Observable, of } from 'rxjs';
@@ -17,14 +17,16 @@ export class AuthService {
 
   async login(credentials: UserInfo): Promise<{ access_token: string }> {
     const user = await this.userRepository.findOne({
-      where: { user_name: credentials.username },
+      where: {
+        user_id: ILike(`%${credentials.username}%`),
+      },
     });
 
     if (user && (await bcrypt.compare(credentials.password, user.password))) {
       const role = this.mapPermissionToRole(user.permission);
       const payload: UserInfo = {
-        username: user.user_name,
-        user_id: user.id.toFixed(),
+        user_id: user.user_id,
+        id: user.id,
         role: role,
         first_name: user.first_name,
         last_name: user.last_name,

@@ -26,7 +26,7 @@ export class RegisterService {
 
   async findOne(user: CreateRegisterDto) {
     const data = await this.usersRepository.findOne({
-      where: { user_name: user.user_name },
+      where: { user_id: user.user_id },
     });
 
     return data;
