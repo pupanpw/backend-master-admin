@@ -5,7 +5,7 @@ export class UserResponseDto {
   id: number;
 
   @Expose()
-  user_name: string;
+  user_id: string;
 
   @Expose()
   first_name: string;

@@ -1,12 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from '../user/user.entity/user.entity';
+import { UserEntity } from '../../modules/user/user.entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role, UserInfo } from 'src/types/common-request.type';
 import { Observable, of } from 'rxjs';
-
+import { UnauthorizedException } from '@nestjs/common/exceptions/unauthorized.exception';
 @Injectable()
 export class AuthService {
   constructor(
