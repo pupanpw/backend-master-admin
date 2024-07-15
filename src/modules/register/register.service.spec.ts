@@ -6,10 +6,12 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { PermissionService } from '../permission/permission.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 describe('RegisterService', () => {
   let service: RegisterService;
   let permissionService: PermissionService;
+  let cacheManager: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -40,6 +42,7 @@ describe('RegisterService', () => {
 
     service = module.get<RegisterService>(RegisterService);
     permissionService = module.get<PermissionService>(PermissionService);
+    cacheManager = module.get(CACHE_MANAGER);
   });
 
   afterEach(() => {

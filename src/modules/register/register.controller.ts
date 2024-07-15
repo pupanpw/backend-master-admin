@@ -13,6 +13,7 @@ import { CreateRegisterDto } from './dto/create-register.dto';
 import { JwtAuthGuard } from '@/security/auth/jwt-auth.guard';
 import { UpdateRegisterDto } from './dto/update-register.dto';
 import { CommonRequest } from '@/common/types/common-request.type';
+import { CacheManager } from '@/common/decorators/cache.decorator';
 
 @Controller('v1')
 export class RegisterController {
@@ -26,6 +27,7 @@ export class RegisterController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/users')
+  @CacheManager('User', 86400, 'key')
   findAll() {
     return this.registerService.findAll();
   }

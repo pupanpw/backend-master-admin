@@ -8,15 +8,12 @@ config();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: Buffer.from(
-        configService.get<string>('JWT_SECRET_KEY'),
-        'base64',
-      ),
-      algorithms: ['HS512'],
+      secretOrKey: Buffer.from(configService.get<string>('JWT_SECRET_KEY')),
+      algorithms: ['HS256'],
     });
   }
 
