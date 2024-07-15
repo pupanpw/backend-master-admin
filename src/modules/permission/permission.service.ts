@@ -1,4 +1,4 @@
-import { Role, UserInfo } from '@/types/common-request.type';
+import { Role, UserInfo } from '@/common/types/common-request.type';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()

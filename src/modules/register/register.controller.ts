@@ -12,7 +12,7 @@ import { RegisterService } from './register.service';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { JwtAuthGuard } from '@/security/auth/jwt-auth.guard';
 import { UpdateRegisterDto } from './dto/update-register.dto';
-import { CommonRequest } from '@/types/common-request.type';
+import { CommonRequest } from '@/common/types/common-request.type';
 
 @Controller('v1')
 export class RegisterController {

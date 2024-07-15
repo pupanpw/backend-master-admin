@@ -1,4 +1,4 @@
-import { Role } from '@/types/common-request.type';
+import { Role } from './types/common-request.type';
 
 export function mapPermissionToRole(permission: number): Role {
   switch (permission) {

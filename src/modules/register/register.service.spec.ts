@@ -5,9 +5,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
+import { PermissionService } from '../permission/permission.service';
 
 describe('RegisterService', () => {
   let service: RegisterService;
+  let permissionService: PermissionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,6 +25,13 @@ describe('RegisterService', () => {
             findOneBy: jest.fn(),
           })),
         },
+        {
+          provide: PermissionService,
+          useValue: {
+            checkUserPermission: jest.fn(),
+            checkPermissionRole: jest.fn(),
+          },
+        },
       ],
     })
       .overrideProvider(DataSource)
@@ -30,6 +39,7 @@ describe('RegisterService', () => {
       .compile();
 
     service = module.get<RegisterService>(RegisterService);
+    permissionService = module.get<PermissionService>(PermissionService);
   });
 
   afterEach(() => {

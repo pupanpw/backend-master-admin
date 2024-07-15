@@ -4,7 +4,7 @@ import { UserEntity } from '../../modules/user/user.entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserInfo } from 'src/types/common-request.type';
+import { UserInfo } from '@/common/types/common-request.type';
 import { Observable, of } from 'rxjs';
 import { UnauthorizedException } from '@nestjs/common/exceptions/unauthorized.exception';
 import { mapPermissionToRole } from '@/common/convertPermission';

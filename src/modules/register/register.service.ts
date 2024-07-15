@@ -7,7 +7,7 @@ import { CreateRegisterDto } from './dto/create-register.dto';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dto/user.response.dto';
 import { UpdateRegisterDto } from './dto/update-register.dto';
-import { CommonRequest } from '@/types/common-request.type';
+import { CommonRequest } from '@/common/types/common-request.type';
 import { PermissionService } from '../permission/permission.service';
 
 @Injectable()
