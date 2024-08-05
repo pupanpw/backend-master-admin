@@ -12,5 +12,6 @@ import * as redisStore from 'cache-manager-redis-store';
       tls: process.env.REDIS_TLS === 'true' ? {} : undefined,
     }),
   ],
+  exports: [CacheModule],
 })
 export class RedisModule {}

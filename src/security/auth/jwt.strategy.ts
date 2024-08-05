@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
+import { UserInfo } from '@/common/types/common-request.type';
 
 config();
 
@@ -17,10 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: UserInfo) {
     return {
-      userId: payload.sub,
-      username: payload.username,
+      username: payload.user_id,
+      first_name: payload.first_name,
+      last_name: payload.last_name,
       role: payload.role,
     };
   }
