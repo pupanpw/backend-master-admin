@@ -4,9 +4,9 @@ import { UserEntity } from '../user/user.entity/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import { DataSource } from 'typeorm';
 import { PermissionService } from '../permission/permission.service';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 describe('RegisterService', () => {
   let service: RegisterService;
@@ -15,17 +15,24 @@ describe('RegisterService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [HttpModule, ConfigModule],
-
+      imports: [
+        HttpModule,
+        ConfigModule,
+        CacheModule.register(), // Register CacheModule if CACHE_MANAGER is used
+      ],
       providers: [
         RegisterService,
         {
           provide: getRepositoryToken(UserEntity),
-          useValue: jest.fn(() => ({
+          useValue: {
             findOne: jest.fn(),
             countBy: jest.fn(),
             findOneBy: jest.fn(),
-          })),
+            save: jest.fn(),
+            findAndCount: jest.fn(),
+            update: jest.fn(),
+            findOneOrFail: jest.fn(),
+          },
         },
         {
           provide: PermissionService,
@@ -36,13 +43,13 @@ describe('RegisterService', () => {
         },
       ],
     })
-      .overrideProvider(DataSource)
-      .useValue({})
+      .overrideProvider(CACHE_MANAGER)
+      .useValue({}) // Mock CACHE_MANAGER if needed
       .compile();
 
     service = module.get<RegisterService>(RegisterService);
     permissionService = module.get<PermissionService>(PermissionService);
-    cacheManager = module.get(CACHE_MANAGER);
+    cacheManager = module.get<Cache>(CACHE_MANAGER);
   });
 
   afterEach(() => {
@@ -52,6 +59,4 @@ describe('RegisterService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  // Add more tests here
 });

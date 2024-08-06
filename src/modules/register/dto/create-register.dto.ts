@@ -14,5 +14,5 @@ export class CreateRegisterDto {
   password: string;
 
   @IsNotEmpty()
-  permission: number;
+  email: string;
 }

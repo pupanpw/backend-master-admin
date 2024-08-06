@@ -19,4 +19,7 @@ export class UserEntity {
 
   @Column({ name: 'PERMISSION' })
   permission: number;
+
+  @Column({ type: 'varchar', length: 255, name: 'EMAIL' })
+  email: string;
 }

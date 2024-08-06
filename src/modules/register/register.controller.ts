@@ -19,7 +19,6 @@ import { CacheManager } from '@/common/decorators/cache.decorator';
 export class RegisterController {
   constructor(private readonly registerService: RegisterService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post('/register')
   create(@Body() createRegisterDto: CreateRegisterDto) {
     return this.registerService.registerUser(createRegisterDto);

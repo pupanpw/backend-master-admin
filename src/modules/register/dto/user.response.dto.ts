@@ -14,5 +14,8 @@ export class UserResponseDto {
   last_name: string;
 
   @Expose()
+  email: string;
+
+  @Expose()
   permission: string;
 }

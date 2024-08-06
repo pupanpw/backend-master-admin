@@ -36,15 +36,15 @@ export class RegisterService {
     return data;
   }
 
-  async registerUser(user: CreateRegisterDto): Promise<UserEntity> {
+  async registerUser(user: CreateRegisterDto): Promise<boolean> {
     const validateUser = await this.findOne(user);
+
     if (!validateUser) {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(user.password, saltRounds);
       user.password = hashedPassword;
 
-      console.log(user);
-      return this.usersRepository.save(user);
+      return true;
     } else {
       throw new BadRequestException({
         status_code: 400,
@@ -70,8 +70,6 @@ export class RegisterService {
       if (!findUser) {
         throw new Error(`Error: ID ${id} is invalid`);
       }
-      console.log(body.permission, 'body.permission');
-      //  let    mapPermissionToRole()
       const updateUser = await this.usersRepository.update(id, body);
 
       return updateUser;
