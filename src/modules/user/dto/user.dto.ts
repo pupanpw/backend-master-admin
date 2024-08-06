@@ -7,4 +7,5 @@ export class UserDto {
 export enum Role {
   User = 'User',
   Admin = 'Admin',
+  MasterAdmin = 'master_admin',
 }

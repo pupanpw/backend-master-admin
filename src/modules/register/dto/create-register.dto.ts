@@ -1,8 +1,8 @@
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateRegisterDto {
   @IsNotEmpty()
-  user_name: string;
+  user_id: string;
 
   @IsNotEmpty()
   first_name: string;
@@ -14,5 +14,5 @@ export class CreateRegisterDto {
   password: string;
 
   @IsNotEmpty()
-  permission: string;
+  email: string;
 }

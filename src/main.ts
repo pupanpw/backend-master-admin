@@ -2,10 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import * as os from 'os';
+import * as express from 'express';
+
 config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.setGlobalPrefix('master-admin');
+  app.use(express.json({ limit: '10mb' }));
 
   const port = process.env.PORT || 3000;
   await app.listen(port, () => {

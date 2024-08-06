@@ -1,6 +1,6 @@
 export type UserInfo = {
-  username: string;
   user_id: string;
+  id: number;
   first_name: string;
   last_name: string;
   role: Role;

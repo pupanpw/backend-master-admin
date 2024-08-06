@@ -5,8 +5,8 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255, name: 'USER_NAME' })
-  user_name: string;
+  @Column({ length: 255, name: 'USER_ID' })
+  user_id: string;
 
   @Column({ length: 255, name: 'FIRST_NAME' })
   first_name: string;
@@ -17,6 +17,9 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 11 })
   password: string;
 
-  @Column({ length: 255, name: 'PERMISSION' })
-  permission: string;
+  @Column({ name: 'PERMISSION' })
+  permission: number;
+
+  @Column({ type: 'varchar', length: 255, name: 'EMAIL' })
+  email: string;
 }

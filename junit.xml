@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="2" failures="0" errors="0" time="6.457">
+  <testsuite name="RegisterService" errors="0" failures="0" skipped="0" timestamp="2024-07-14T15:39:07" time="5.827" tests="1">
+    <testcase classname="RegisterService should be defined" name="RegisterService should be defined" time="0.034">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserService" errors="0" failures="0" skipped="0" timestamp="2024-07-14T15:39:13" time="0.464" tests="1">
+    <testcase classname="UserService should be defined" name="UserService should be defined" time="0.011">
+    </testcase>
+  </testsuite>
+</testsuites>
