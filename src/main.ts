@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import * as os from 'os';
 import * as express from 'express';
+import { ValidationPipe } from '@nestjs/common';
 
 config();
 
@@ -11,7 +12,7 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('master-admin');
   app.use(express.json({ limit: '10mb' }));
-
+  app.useGlobalPipes(new ValidationPipe());
   const port = process.env.PORT || 3000;
   await app.listen(port, () => {
     const localIP = getLocalIPAddress();

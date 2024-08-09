@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+import { ACTIVE_FLAG_Y } from '@/common/constants/common.constant';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateRegisterDto {
   @IsNotEmpty()
@@ -14,5 +15,9 @@ export class CreateRegisterDto {
   password: string;
 
   @IsNotEmpty()
+  @IsEmail()
   email: string;
+
+  permission: number;
+  active_flag: string;
 }

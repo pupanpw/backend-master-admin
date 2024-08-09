@@ -1,14 +1,26 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { UserEntity } from '@/modules/user/user.entity/user.entity';
+import { UserEntity } from '@/modules/users/user.entity/user.entity';
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dto/user.response.dto';
 import { UpdateRegisterDto } from './dto/update-register.dto';
 import { CommonRequest } from '@/common/types/common-request.type';
 import { PermissionService } from '../permission/permission.service';
+import {
+  MyFailStatusResponse,
+  MyStatusResponse,
+} from '@/common/types/mystatus-response.type';
+import {
+  ACTIVE_FLAG_Y,
+  CREATE_SUCCESS,
+} from '@/common/constants/common.constant';
 
 @Injectable()
 export class RegisterService {
@@ -18,16 +30,6 @@ export class RegisterService {
     private permissionService: PermissionService,
   ) {}
 
-  async findAll() {
-    const [data, total] = await this.usersRepository.findAndCount();
-    return {
-      data: instanceToPlain(plainToInstance(UserResponseDto, data), {
-        strategy: 'excludeAll',
-      }),
-      total: total,
-    };
-  }
-
   async findOne(user: CreateRegisterDto) {
     const data = await this.usersRepository.findOne({
       where: { user_id: user.user_id },
@@ -36,45 +38,46 @@ export class RegisterService {
     return data;
   }
 
-  async registerUser(user: CreateRegisterDto): Promise<boolean> {
-    const validateUser = await this.findOne(user);
+  async registerUser(
+    user: CreateRegisterDto,
+  ): Promise<MyStatusResponse<boolean>> {
+    try {
+      await this.ensureUserDoesNotExist(user);
+      await this.hashUserPassword(user);
+      await this.saveUser(user);
+      return new MyStatusResponse(true, CREATE_SUCCESS);
+    } catch (error) {
+      return new MyFailStatusResponse(false, error.message);
+    }
+  }
 
-    if (!validateUser) {
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-      user.password = hashedPassword;
-
-      return true;
-    } else {
+  private async ensureUserDoesNotExist(user: CreateRegisterDto): Promise<void> {
+    const existingUser = await this.findOne(user);
+    if (existingUser) {
       throw new BadRequestException({
         status_code: 400,
-        message: `User Name Dupplicate!.`,
+        message: 'User Name Duplicate!',
         error: 'Bad Request',
       });
     }
   }
 
-  async update(
-    body: UpdateRegisterDto,
-    id: number,
-    commonRequest: CommonRequest,
-  ) {
-    this.permissionService.checkUserPermission(commonRequest.user);
+  private async hashUserPassword(user: CreateRegisterDto): Promise<void> {
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(user.password, saltRounds);
+  }
+
+  private async saveUser(user: CreateRegisterDto): Promise<void> {
     try {
-      const findUser = await this.usersRepository.findOneOrFail({
-        where: {
-          id: id,
-        },
+      user.active_flag = ACTIVE_FLAG_Y;
+      user.permission = 1;
+      await this.usersRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException({
+        status_code: 500,
+        message: error.message,
+        error: 'Internal Server Error',
       });
-
-      if (!findUser) {
-        throw new Error(`Error: ID ${id} is invalid`);
-      }
-      const updateUser = await this.usersRepository.update(id, body);
-
-      return updateUser;
-    } catch (e) {
-      throw new Error(`Error: ID ${id} is invalid`);
     }
   }
 }

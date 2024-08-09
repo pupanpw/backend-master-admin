@@ -5,9 +5,16 @@ import { AuthModule } from './security/auth/auth.module';
 import { DatabaseModule } from './config/database.module';
 import { RegisterModule } from './modules/register/register.module';
 import { RedisModule } from './config/redis.module';
+import { UserModule } from './modules/users/user.module';
 
 @Module({
-  imports: [AuthModule, DatabaseModule, RegisterModule, RedisModule],
+  imports: [
+    AuthModule,
+    DatabaseModule,
+    RegisterModule,
+    RedisModule,
+    UserModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

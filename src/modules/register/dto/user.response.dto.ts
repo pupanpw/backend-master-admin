@@ -17,5 +17,8 @@ export class UserResponseDto {
   email: string;
 
   @Expose()
-  permission: string;
+  role: string;
+
+  @Expose()
+  active_flag: string;
 }

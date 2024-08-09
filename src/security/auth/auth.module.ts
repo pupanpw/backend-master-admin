@@ -4,19 +4,21 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
-import { UserModule } from '../../modules/user/user.module';
+import { UserModule } from '../../modules/users/user.module';
 import { jwtConstants } from '../constants/constants';
-import { UserService } from '../../modules/user/user.service';
+import { UserService } from '../../modules/users/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../../modules/user/user.entity/user.entity';
+import { UserEntity } from '../../modules/users/user.entity/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
+import { PermissionModule } from '@/modules/permission/permission.module';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
+    PermissionModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1h' },

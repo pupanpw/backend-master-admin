@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from '../../modules/user/user.entity/user.entity';
+import { UserEntity } from '../../modules/users/user.entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -45,6 +45,7 @@ export class AuthService {
       role: role,
       first_name: user.first_name,
       last_name: user.last_name,
+      email: user.email,
       iat: Math.floor(Date.now() / 1000),
     };
 

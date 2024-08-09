@@ -22,4 +22,7 @@ export class UserEntity {
 
   @Column({ type: 'varchar', length: 255, name: 'EMAIL' })
   email: string;
+
+  @Column({ type: 'varchar', length: 1, name: 'ACTIVE_FLAG' })
+  active_flag: string;
 }
