@@ -8,10 +8,6 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '@/modules/users/user.entity/user.entity';
 import { CreateRegisterDto } from './dto/create-register.dto';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { UserResponseDto } from './dto/user.response.dto';
-import { UpdateRegisterDto } from './dto/update-register.dto';
-import { CommonRequest } from '@/common/types/common-request.type';
 import { PermissionService } from '../permission/permission.service';
 import {
   MyFailStatusResponse,

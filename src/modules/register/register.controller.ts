@@ -1,19 +1,6 @@
-import { CacheManager } from '@/common/decorators/cache.decorator';
-import { CommonRequest } from '@/common/types/common-request.type';
 import { MyStatusResponse } from '@/common/types/mystatus-response.type';
-import { JwtAuthGuard } from '@/security/auth/jwt-auth.guard';
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Get,
-  Patch,
-  Param,
-  Body,
-  Request,
-} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { CreateRegisterDto } from './dto/create-register.dto';
-import { UpdateRegisterDto } from './dto/update-register.dto';
 import { RegisterService } from './register.service';
 
 @Controller('v1')

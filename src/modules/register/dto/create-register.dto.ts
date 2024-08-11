@@ -1,5 +1,4 @@
-import { ACTIVE_FLAG_Y } from '@/common/constants/common.constant';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateRegisterDto {
   @IsNotEmpty()

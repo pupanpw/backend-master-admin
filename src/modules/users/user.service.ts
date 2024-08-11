@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository } from 'typeorm';
 import { UserEntity } from './user.entity/user.entity';
 import { ACTIVE_FLAG_Y } from '@/common/constants/common.constant';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '../register/dto/user.response.dto';
 import { FindUserQueryDto } from './dto/user.dto.request';
 import { CommonRequest } from '@/common/types/common-request.type';
