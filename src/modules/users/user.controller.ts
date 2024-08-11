@@ -1,4 +1,3 @@
-import { CacheManager } from '@/common/decorators/cache.decorator';
 import { JwtAuthGuard } from '@/security/auth/jwt-auth.guard';
 import {
   Controller,

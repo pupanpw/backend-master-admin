@@ -43,7 +43,6 @@ export class UserService {
   ): Promise<{ data: Record<string, any>; total: number }> {
     const { limit = 10, offset = 0, search, sort } = query;
     const userId = commonRequest.user.user_id;
-    console.log(userId, 'userId');
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     queryBuilder.where(
       'user.active_flag = :active_flag AND user.user_id != :excluded_user_id',
@@ -95,8 +94,6 @@ export class UserService {
       delete body.id;
 
       const updateResult = await this.usersRepository.update(id, body);
-
-      console.log('Update result:', updateResult);
 
       return updateResult;
     } catch (e) {

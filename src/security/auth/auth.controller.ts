@@ -24,8 +24,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/check/login')
   update(@Request() request: CommonRequest) {
-    console.log(request.user, 'testDOH');
-    console.log(request.headers, 'testDOH');
     return request.user;
   }
   @UseGuards(JwtAuthGuard)

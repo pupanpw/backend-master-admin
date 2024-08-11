@@ -21,7 +21,7 @@ describe('PermissionService', () => {
   describe('checkUserPermission', () => {
     it('should throw a BadRequestException for a user with role "user"', () => {
       const mockUser: any = {
-        role: Role.User,
+        role: Role.User || Role.Admin,
       };
 
       expect(() => service.checkUserPermission(mockUser)).toThrow(
@@ -34,7 +34,7 @@ describe('PermissionService', () => {
 
     it('should not throw an exception for a user with role "admin"', () => {
       const mockUser: any = {
-        role: Role.Admin,
+        role: Role.MasterAdmin,
       };
 
       expect(() => service.checkUserPermission(mockUser)).not.toThrow();

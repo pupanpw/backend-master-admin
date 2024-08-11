@@ -1,7 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 
-const mockUserService = {};
+const mockUserService = {
+  id: 23,
+  first_name: 'pupan',
+  last_name: 'test-1',
+  email: 'pupan-test@pw.com',
+  role: 'user',
+};
 
 describe('UserService', () => {
   let service: UserService;

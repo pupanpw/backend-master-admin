@@ -4,10 +4,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 @Injectable()
 export class PermissionService {
   checkUserPermission(user: UserInfo) {
-    if (user.role === Role.User) {
+    if (user.role === Role.User || user.role === Role.Admin) {
       throw new BadRequestException(
         'BAD_REQUEST',
-        "User's permission is not a {{permission}}",
+        "User's permission is not a Permission",
       );
     }
   }
