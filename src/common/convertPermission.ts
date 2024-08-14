@@ -15,3 +15,17 @@ export function mapPermissionToRole(permission: number): Role {
       return Role.User;
   }
 }
+
+export function mapRoleToNumber(role: string): number {
+  switch (role) {
+    case Role.User:
+      return 1;
+    case Role.Admin:
+      return 2;
+    case Role.MasterAdmin:
+      return 3;
+    default:
+      console.warn(`Unknown role value: ${role}. Defaulting to 1.`);
+      return 1;
+  }
+}

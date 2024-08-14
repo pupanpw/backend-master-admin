@@ -4,6 +4,7 @@ export type UserInfo = {
   first_name: string;
   last_name: string;
   role: Role;
+  email: string;
   iat: any;
   exp?: any;
   [key: string]: any;

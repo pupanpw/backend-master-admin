@@ -1,25 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RegisterService } from './register.service';
-import { UserEntity } from '../user/user.entity/user.entity';
+import { UserEntity } from '../users/user.entity/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { PermissionService } from '../permission/permission.service';
 import { CACHE_MANAGER, CacheModule } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 describe('RegisterService', () => {
   let service: RegisterService;
-  let permissionService: PermissionService;
-  let cacheManager: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        HttpModule,
-        ConfigModule,
-        CacheModule.register(), // Register CacheModule if CACHE_MANAGER is used
-      ],
+      imports: [HttpModule, ConfigModule, CacheModule.register()],
       providers: [
         RegisterService,
         {
@@ -44,12 +37,10 @@ describe('RegisterService', () => {
       ],
     })
       .overrideProvider(CACHE_MANAGER)
-      .useValue({}) // Mock CACHE_MANAGER if needed
+      .useValue({})
       .compile();
 
     service = module.get<RegisterService>(RegisterService);
-    permissionService = module.get<PermissionService>(PermissionService);
-    cacheManager = module.get<Cache>(CACHE_MANAGER);
   });
 
   afterEach(() => {

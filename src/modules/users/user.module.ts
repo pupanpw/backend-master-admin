@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { RegisterService } from './register.service';
+import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './user.entity/user.entity';
 import { PermissionModule } from '../permission/permission.module';
-import { UserEntity } from '../users/user.entity/user.entity';
 import { CacheModule } from '@nestjs/cache-manager';
-import { RegisterController } from './register.controller';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -12,8 +12,8 @@ import { RegisterController } from './register.controller';
     PermissionModule,
     CacheModule.register(),
   ],
-  controllers: [RegisterController],
-  providers: [RegisterService],
-  exports: [RegisterService],
+  controllers: [UserController],
+  providers: [UserService],
+  exports: [UserService],
 })
-export class RegisterModule {}
+export class UserModule {}
