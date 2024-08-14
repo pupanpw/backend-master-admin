@@ -23,7 +23,9 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async login(credentials: UserInfo): Promise<{ access_token: string }> {
+  async login(
+    credentials: UserInfo,
+  ): Promise<{ access_token: string; refresh_token: string }> {
     const user = await this.userRepository.findOne({
       where: {
         user_id: ILike(`%${credentials.username}%`),
@@ -50,26 +52,71 @@ export class AuthService {
     };
 
     const access_token = this.generateAccessToken(payload);
+    const refresh_token = this.generateRefreshToken(payload);
 
-    await this.cacheManager.set(payload.user_id, access_token, 3600);
+    await this.cacheManager.set(
+      payload.user_id,
+      { access_token, refresh_token },
+      86400,
+    );
 
-    return { access_token };
+    return { access_token, refresh_token };
   }
 
   private generateAccessToken(payload: UserInfo): string {
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign(payload, { expiresIn: '1h' });
   }
 
-  async getToken(userId: string): Promise<any> {
+  private generateRefreshToken(payload: UserInfo): string {
+    return this.jwtService.sign(payload, { expiresIn: '7d' });
+  }
+
+  async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<{ access_token: string }> {
+    try {
+      const decoded = this.jwtService.verify(refreshToken);
+      const userId = decoded.user_id;
+
+      const cachedTokens = await this.cacheManager.get<{
+        access_token: string;
+        refresh_token: string;
+      }>(userId);
+
+      if (!cachedTokens || cachedTokens.refresh_token !== refreshToken) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      const payload: UserInfo = {
+        user_id: decoded.user_id,
+        id: decoded.id,
+        role: decoded.role,
+        first_name: decoded.first_name,
+        last_name: decoded.last_name,
+        email: decoded.email,
+        iat: Math.floor(Date.now() / 1000),
+      };
+
+      const newAccessToken = this.generateAccessToken(payload);
+      cachedTokens.access_token = newAccessToken;
+
+      await this.cacheManager.set(userId, cachedTokens, 86400);
+
+      return { access_token: newAccessToken };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+  async getToken(userId: string): Promise<string | null> {
     if (!userId) {
       throw new BadRequestException('User ID must be provided');
     }
 
-    const token = await this.cacheManager.get(userId);
-    return token;
+    const token = await this.cacheManager.get<string>(userId);
+    return token || null;
   }
 
-  async invalidateToken(userId: string): Promise<void> {
+  async invalidateTokens(userId: string): Promise<void> {
     if (!userId) {
       throw new BadRequestException('User ID must be provided');
     }

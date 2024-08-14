@@ -1,31 +1,44 @@
 import {
   Controller,
   Post,
-  UseGuards,
   Body,
-  Get,
+  UseGuards,
   Request,
+  Get,
   HttpException,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { CommonRequest, UserInfo } from '@/common/types/common-request.type';
+import { CommonRequest } from '@/common/types/common-request.type';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() credentials: UserInfo) {
+  async login(@Body() credentials: any) {
     return this.authService.login(credentials);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/check/login')
-  update(@Request() request: CommonRequest) {
-    return request.user;
+  @Post('refresh-token')
+  async refreshToken(@Body('refresh_token') refreshToken: string) {
+    return this.authService.refreshAccessToken(refreshToken);
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  async logout(@Request() req: CommonRequest) {
+    const user = req.user;
+    if (!user || !user.user_id) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+
+    await this.authService.invalidateTokens(user.user_id);
+
+    return { message: 'Logout successful' };
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('validate-login')
   async checkLogin(@Request() request: CommonRequest) {
