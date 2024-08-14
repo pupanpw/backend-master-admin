@@ -103,6 +103,7 @@
       "interfaces",
       "jestGlobalMocks.ts",
       ".module.ts",
+      ".user.dto.request.ts",
       "main.ts",
       ".mock.ts",
       "database.module.ts",
@@ -120,7 +121,10 @@
       ".*\\.constant.ts$",
       ".*\\.exception.ts$",
       ".*\\.entity.ts$",
-      ".*\\.type.ts$"
+      ".*\\.type.ts$",
+      ".*\\.type.ts$",
+     ".*\\/src\\/security", 
+      ".*\\.local-strategy.ts$"
     ],
     "coverageDirectory": "../report/coverage",
     "testEnvironment": "node",

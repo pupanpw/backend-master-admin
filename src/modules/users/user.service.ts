@@ -14,7 +14,7 @@ import { searchCondition } from '@/common/helpers/common.helper';
 import {
   mapPermissionToRole,
   mapRoleToNumber,
-} from '@/common/convertPermission';
+} from '@/common/helpers/convertPermission';
 
 @Injectable()
 export class UserService {
