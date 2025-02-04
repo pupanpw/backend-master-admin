@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserInfo } from '@/common/types/common-request.type';
-import { mapPermissionToRole } from '@/common/convertPermission';
+import { mapPermissionToRole } from '@/common/helpers/convertPermission';
 import { Cache } from 'cache-manager';
 import { Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
