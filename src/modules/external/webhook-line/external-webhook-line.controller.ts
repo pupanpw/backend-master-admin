@@ -1,26 +1,26 @@
 import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
+import { ExternalWebhookLineService } from './external-webhook-line.service';
 
 @Controller('v1')
 export class WebhookController {
+  constructor(
+    private readonly externalWebhookLineService: ExternalWebhookLineService,
+  ) {}
+
   @Post('webhook')
-  handleWebhook(@Body() body: any) {
-    const events = body.events;
-    events.forEach((event: any) => {
-      if (event.source.type === 'group') {
-        const groupId = event.source.groupId;
-        console.log('Received Group ID:', groupId);
-        const replyToken = event.replyToken;
-        this.replyToUser(replyToken);
-      }
-    });
-
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'OK',
-    };
-  }
-
-  replyToUser(replyToken: string) {
-    console.log('Replying to user with replyToken:', replyToken);
+  async handleWebhook(@Body() body: any) {
+    try {
+      await this.externalWebhookLineService.webHook(body);
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'OK',
+      };
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Error processing webhook',
+        error: error.message,
+      };
+    }
   }
 }
