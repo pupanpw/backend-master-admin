@@ -36,3 +36,5 @@ lerna-debug.log*
 .env
 .env
 report
+src/modules/external-line-login/login-line.html
+src/modules/external/line-login/login-line.html

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  nestjs-app:
+    build: .
+    ports:
+      - '3006:3006'
+    environment:
+      NODE_ENV: production
